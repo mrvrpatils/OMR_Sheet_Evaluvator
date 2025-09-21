@@ -160,16 +160,17 @@ def evaluate_and_process(image_path, excel_path):
                 marked_option = None
                 for option_index, option_roi in enumerate(option_rois):
                     x, y, w, h = option_roi
-                    if  image_for_ocr is not None and hasattr(image_for_ocr, 'shape') and image_for_ocr.shape is not None and x >= 0 and y >= 0 and x + w <= image_for_ocr.shape[1] and y + h <= image_for_ocr.shape[0]:
-                        roi_image = image_for_ocr[y:y + h, x:x + w]
-                        if roi_image is not None and roi_image.size > 0:
-                            mean_intensity = cv2.mean(roi_image)
-                            if isinstance(mean_intensity, tuple) and len(mean_intensity) > 0:
-                                mean_intensity_value = mean_intensity[0]
-                                # Adjust the threshold based on the image quality and lighting conditions
-                                if mean_intensity_value < 100:
-                                    marked_option = option_index
-                                    break
+                    if  image_for_ocr is not None and hasattr(image_for_ocr, 'shape') and image_for_ocr.shape is not None:
+                        if x >= 0 and y >= 0 and x + w <= image_for_ocr.shape[1] and y + h <= image_for_ocr.shape[0]:
+                            roi_image = image_for_ocr[y:y + h, x:x + w]
+                            if roi_image is not None and roi_image.size > 0:
+                                mean_intensity = cv2.mean(roi_image)
+                                if isinstance(mean_intensity, tuple) and len(mean_intensity) > 0:
+                                    mean_intensity_value = mean_intensity[0]
+                                    # Adjust the threshold based on the image quality and lighting conditions
+                                    if mean_intensity_value < 100:
+                                        marked_option = option_index
+                                        break
 
                 if marked_option is not None:
                     student_answers[f"{subject_name}_{question_num}"] = chr(65 + marked_option)  # A=65, B=66, etc.
