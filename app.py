@@ -6,6 +6,8 @@ import io
 import mysql.connector
 from parse_keys import evaluate_and_process, save_results_to_db  # Import the main processing function
 
+# Required dependencies: streamlit, opencv-python, pillow, pytesseract, mysql-connector-python, pandas
+
 # Initialize session state for theme mode
 if 'theme_mode' not in st.session_state:
     st.session_state['theme_mode'] = 'light'
